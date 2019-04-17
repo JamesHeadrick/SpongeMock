@@ -1,3 +1,5 @@
+Menu, Tray, Icon, %A_ScriptDir%\spongemock.ico
+
 #c::
   If SavedCapsLock=
   {
