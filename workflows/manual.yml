@@ -1,0 +1,29 @@
+name: Build and Publish Client Library to CodeArtifact
+
+on:
+  workflow_dispatch:
+    inputs:
+      isPrerelease:
+        description: 'Type anything here to have a prerlease version published (e.g. X.X.X-devY.Z).  Leave blank to publish a full verison (e.g. X.X.X)'
+        default: ""
+        required: false
+
+  
+jobs:
+  BuildAndPublish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Figure out VERSION_SUFFIX
+      run: |
+        if [ -z "${{ github.event.inputs.isPrerelease }}"];
+            then 
+            version=''
+        else
+            version='--version-suffix dev-${{ github.run_number }}.${{ github.run_attempt }}'
+        fi
+        echo "VERSION_SUFFIX=$version" >> "$GITHUB_ENV"
+        echo "BUILD_CONFIG=Release" >> "$GITHUB_ENV"
+
+    - name: Debug Echo
+      run: echo "VERSION_SUFFIX:${VERSION_SUFFIX}"
